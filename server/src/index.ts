@@ -7,6 +7,7 @@ import morgan from "morgan";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import categoryRoutes from "./routes/categoryRoutes";
+import transactionRoutes from "./routes/transactionRoutes";
 
 // Swagger configuration
 const swaggerOptions = {
@@ -40,7 +41,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cors());
 
 // Routes
-app.use("/api/category", categoryRoutes);
+app.use("/api/categories", categoryRoutes);
+app.use("/api/transactions", transactionRoutes);
 
 // Swagger route
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));

@@ -6,13 +6,14 @@ const prisma = new PrismaClient();
 export const getCategories = async (req: Request, res: Response): Promise<void> => {
     try {
         const categories = await prisma.categories.findMany({
-            orderBy: { category_id: "asc"},
+            orderBy: { category_id: "asc" },
             select: {
                 category_id: true,
                 name: true,
                 description: true,
             },
         });
+
         res.json(categories);
     } catch (error) {
         console.error("Error retrieving categories:", error);
@@ -40,7 +41,10 @@ export const updateCategory = async (req: Request, res: Response): Promise<void>
             return;
         }
 
-        const updatedCategory = await prisma.categories.update({ where: { category_id: Number(id) }, data: { name, description } });
+        const updatedCategory = await prisma.categories.update({ 
+            where: { category_id: Number(id) }, 
+            data: { name, description } 
+        });
         res.status(200).json(updatedCategory);
     } catch (error) {
         console.error("Error updating category:", error);
@@ -57,7 +61,7 @@ export const deleteCategory = async (req: Request, res: Response): Promise<void>
         }
 
         await prisma.categories.delete({ where: { category_id: Number(id) } });
-        res.status(204).json("Successfully deleted category").send();
+        res.status(204).send();
     } catch (error) {
         console.error("Error deleting category:", error);
         res.status(500).json({ error: "Internal server error" });
