@@ -79,21 +79,30 @@ export const updateProduct = async(req: Request, res: Response): Promise<void> =
     }
 };
 
-export const deleteProduct = async(req: Request, res: Response): Promise<void> =>{
-    const {id} = req.params;
+export const deleteProduct = async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
+
     try {
-        if(!id){
-            res.status(400).json({error: "Product id is required"});
+        const productId = Number(id);
+        if (isNaN(productId)) {
+            res.status(400).json({ error: "Invalid product ID" });
             return;
         }
 
-        await prisma.products.delete({where: {product_id: Number(id)}});
-        res.status(204).json("Successfully deleted product").send();
+        const product = await prisma.products.findUnique({
+            where: { product_id: productId },
+        });
+
+        if (!product) {
+            res.status(404).json({ error: "Product not found" });
+            return;
+        }
+
+        await prisma.products.delete({ where: { product_id: productId } });
+        res.status(200).json({message: "Successfully deleted product"}); 
     } catch (error) {
         console.error("Error deleting product: ", error);
-        res.status(500).json({error: "Internal server error"});
-        
+        res.status(500).json({ error: "Internal server error" });
     }
-
 };
 

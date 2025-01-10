@@ -90,12 +90,20 @@ exports.updateProduct = updateProduct;
 const deleteProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     try {
-        if (!id) {
-            res.status(400).json({ error: "Product id is required" });
+        const productId = Number(id);
+        if (isNaN(productId)) {
+            res.status(400).json({ error: "Invalid product ID" });
             return;
         }
-        yield prisma.products.delete({ where: { product_id: Number(id) } });
-        res.status(204).json("Successfully deleted product").send();
+        const product = yield prisma.products.findUnique({
+            where: { product_id: productId },
+        });
+        if (!product) {
+            res.status(404).json({ error: "Product not found" });
+            return;
+        }
+        yield prisma.products.delete({ where: { product_id: productId } });
+        res.status(200).json({ message: "Successfully deleted product" });
     }
     catch (error) {
         console.error("Error deleting product: ", error);
