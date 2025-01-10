@@ -12,6 +12,7 @@ const morgan_1 = __importDefault(require("morgan"));
 const swagger_jsdoc_1 = __importDefault(require("swagger-jsdoc"));
 const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
 const categoryRoutes_1 = __importDefault(require("./routes/categoryRoutes"));
+const productRoutes_1 = __importDefault(require("./routes/productRoutes"));
 // Swagger configuration
 const swaggerOptions = {
     definition: {
@@ -42,6 +43,7 @@ app.use(body_parser_1.default.urlencoded({ extended: false }));
 app.use((0, cors_1.default)());
 // Routes
 app.use("/api/category", categoryRoutes_1.default);
+app.use("/api/product", productRoutes_1.default);
 // Swagger route
 app.use("/api-docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swaggerSpecs));
 // Server
