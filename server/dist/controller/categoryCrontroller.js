@@ -50,7 +50,10 @@ const updateCategory = (req, res) => __awaiter(void 0, void 0, void 0, function*
             res.status(400).json({ error: "Category ID is required" });
             return;
         }
-        const updatedCategory = yield prisma.categories.update({ where: { category_id: Number(id) }, data: { name, description } });
+        const updatedCategory = yield prisma.categories.update({
+            where: { category_id: Number(id) },
+            data: { name, description }
+        });
         res.status(200).json(updatedCategory);
     }
     catch (error) {
@@ -67,7 +70,7 @@ const deleteCategory = (req, res) => __awaiter(void 0, void 0, void 0, function*
             return;
         }
         yield prisma.categories.delete({ where: { category_id: Number(id) } });
-        res.status(204).json("Successfully deleted category").send();
+        res.status(204).send();
     }
     catch (error) {
         console.error("Error deleting category:", error);
