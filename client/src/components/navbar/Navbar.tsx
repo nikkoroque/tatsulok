@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Button } from "../ui/button";
-import { AlignJustify } from "lucide-react";
+import { AlignJustify, Pyramid } from "lucide-react";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,7 +11,8 @@ const Navbar = () => {
     <div className="container px-6 py-4 mx-auto">
       <div className="lg:flex lg:items-center lg:justify-between">
         <div className="flex items-center justify-between">
-          <a href="#">
+          <a href="#" className="flex items-center gap-2">
+            <Pyramid />
             <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
               Tatsulok
             </h3>
