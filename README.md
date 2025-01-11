@@ -5,11 +5,11 @@ This application is designed to streamline and simplify inventory management for
 
 ### Key Features:
 
-- [Feature 1]: (e.g., Track inventory levels in real-time)
-- [Feature 2]: (e.g., Generate reports on inventory usage and low stock alerts)
-- [Feature 3]: (e.g., Manage purchase orders and track supplier information)
-- [Feature 4]: (e.g., User role-based access control)
-- [Feature 5]: (e.g., Intuitive and user-friendly interface)
+- Track inventory levels in real-time
+- Generate reports on inventory usage and low stock alerts
+- Manage purchase orders and track supplier information
+- User role-based access control
+- Intuitive and user-friendly interface
   
 ### Benefits:
 
