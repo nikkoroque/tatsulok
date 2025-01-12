@@ -3,6 +3,7 @@ import Hero from "../../components/hero/Hero";
 import Navbar from "@/components/navbar/Navbar";
 import DummyContent from "@/components/card-carousel/DummyContent";
 import CardCarousel from "@/components/card-carousel/CardCarousel";
+import Services from "./components/Services";
 
 const carouselData = [
   {
@@ -49,6 +50,7 @@ const Home = () => {
       <Navbar />
       <Hero />
       <CardCarousel data={carouselData} title="Inventory made easy" />
+      <Services />
     </>
   );
 };
