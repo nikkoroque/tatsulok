@@ -30,17 +30,14 @@ type Card = {
 
 export const CarouselContext = createContext<{
   onCardClose: (index: number) => void;
-  currentIndex: number;
 }>({
   onCardClose: () => {},
-  currentIndex: 0,
 });
 
 export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
   const carouselRef = React.useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = React.useState(false);
   const [canScrollRight, setCanScrollRight] = React.useState(true);
-  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     if (carouselRef.current) {
@@ -78,7 +75,6 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
         left: scrollPosition,
         behavior: "smooth",
       });
-      setCurrentIndex(index);
     }
   };
 
@@ -88,7 +84,7 @@ export const Carousel = ({ items, initialScroll = 0 }: CarouselProps) => {
 
   return (
     <CarouselContext.Provider
-      value={{ onCardClose: handleCardClose, currentIndex }}
+      value={{ onCardClose: handleCardClose }}
     >
       <div className="relative w-full">
         <div
@@ -164,7 +160,7 @@ export const Card = ({
 }) => {
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const { onCardClose, currentIndex } = useContext(CarouselContext);
+  const { onCardClose } = useContext(CarouselContext);
 
   useEffect(() => {
     function onKeyDown(event: KeyboardEvent) {
