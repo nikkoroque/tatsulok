@@ -2,7 +2,6 @@
 
 import { Button } from "@/components/ui/button";
 import { MagicCard } from "@/components/ui/magic-card";
-import { RainbowButton } from "@/components/ui/rainbow-button";
 import { ArrowRightIcon, CheckIcon } from "lucide-react";
 import React, { useState } from "react";
 import { Switch } from "@/components/ui/switch";
