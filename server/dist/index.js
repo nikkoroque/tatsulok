@@ -11,12 +11,10 @@ const helmet_1 = __importDefault(require("helmet"));
 const morgan_1 = __importDefault(require("morgan"));
 const swagger_jsdoc_1 = __importDefault(require("swagger-jsdoc"));
 const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
-
-// Routes
 const categoryRoutes_1 = __importDefault(require("./routes/categoryRoutes"));
 const productRoutes_1 = __importDefault(require("./routes/productRoutes"));
 const transactionRoutes_1 = __importDefault(require("./routes/transactionRoutes"));
-
+const supplierRoutes_1 = __importDefault(require("./routes/supplierRoutes"));
 // Swagger configuration
 const swaggerOptions = {
     definition: {
@@ -45,13 +43,12 @@ app.use((0, morgan_1.default)("common"));
 app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: false }));
 app.use((0, cors_1.default)());
-
 // Routes
 app.use("/api/category", categoryRoutes_1.default);
 app.use("/api/product", productRoutes_1.default);
 app.use("/api/categories", categoryRoutes_1.default);
 app.use("/api/transactions", transactionRoutes_1.default);
-
+app.use("/api/supplier", supplierRoutes_1.default);
 // Swagger route
 app.use("/api-docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swaggerSpecs));
 // Server

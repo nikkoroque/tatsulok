@@ -9,6 +9,7 @@ import swaggerUi from "swagger-ui-express";
 import categoryRoutes from "./routes/categoryRoutes";
 import productRoutes from "./routes/productRoutes"
 import transactionRoutes from "./routes/transactionRoutes";
+import supplierRoutes from "./routes/supplierRoutes"
 
 // Swagger configuration
 const swaggerOptions = {
@@ -46,6 +47,7 @@ app.use("/api/category", categoryRoutes);
 app.use("/api/product", productRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/transactions", transactionRoutes);
+app.use("/api/supplier", supplierRoutes)
 
 // Swagger route
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));

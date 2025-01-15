@@ -23,8 +23,6 @@ model inventory_transactions {
   transaction_date DateTime? @default(now()) @db.Timestamp(6)
   remarks          String?
   products         products? @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
-
-  
 }
 
 model products {
@@ -32,9 +30,7 @@ model products {
   name                   String                   @db.VarChar(255)
   description            String?
   category_id            Int
-  quantity               Int?                     @default(0)
-  category_id            Int
-  quantity               Int                     @default(0)
+  quantity               Int                      @default(0)
   price                  Decimal                  @db.Decimal(10, 2)
   created_at             DateTime?                @default(now()) @db.Timestamp(6)
   updated_at             DateTime?                @default(now()) @db.Timestamp(6)
