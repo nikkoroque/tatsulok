@@ -1,5 +1,5 @@
 import React from "react";
-import Hero from "../../components/hero/Hero";
+import Hero from "@/app/home/components/Hero";
 import Navbar from "@/components/navbar/Navbar";
 import DummyContent from "@/components/card-carousel/DummyContent";
 import CardCarousel from "@/components/card-carousel/CardCarousel";

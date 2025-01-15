@@ -53,7 +53,7 @@ const Navbar = () => {
               Services
             </a>
             <a
-              href="#"
+              href="/dashboard"
               className="px-4 py-2 mx-3 mt-2 duration-300 transform rounded-md lg:mt-0"
             >
               <Button variant="default" className="px-8">Portal</Button>
