@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
-import { ContainerScroll } from "../ui/container-scroll-animation";
+import { ContainerScroll } from "@/components/ui/container-scroll-animation";
 import Image from "next/image";
-import GridBackground from "../grid-background/GridBackground";
-import { Button } from "../ui/button";
+import GridBackground from "@/components/grid-background/GridBackground";
+import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
 const Hero = () => {
