@@ -9,6 +9,10 @@ const nextConfig = {
           {
             source: "/dashboard/products",
             destination: "/dashboard/views/products",
+          },
+          {
+            source: "/dashboard/suppliers",
+            destination: "/dashboard/views/suppliers",
           }
         ]
       }

@@ -44,7 +44,7 @@ export const routes = {
         },
         {
           title: "Suppliers",
-          url: "#",
+          url: "/dashboard/suppliers",
         },
         {
             title: "Transactions",
