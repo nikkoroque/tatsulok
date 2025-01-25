@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteSupplier = exports.updateSupplier = exports.addSupplier = exports.getSuppliers = void 0;
+exports.validateSupplier = exports.deleteSupplier = exports.updateSupplier = exports.addSupplier = exports.getSuppliers = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const getSuppliers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -88,3 +88,19 @@ const deleteSupplier = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.deleteSupplier = deleteSupplier;
+const validateSupplier = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { name } = req.params;
+    try {
+        const existingSupplier = yield prisma.suppliers.findFirst({ where: { name: { equals: name, mode: "insensitive" } } });
+        if (existingSupplier) {
+            res.status(409).json({ error: "Supplier already exists." });
+            return;
+        }
+        res.status(200).json({ message: "Supplier is available." });
+    }
+    catch (error) {
+        console.error("Error validating supplier:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+exports.validateSupplier = validateSupplier;

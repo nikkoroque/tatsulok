@@ -44,7 +44,6 @@ app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: false }));
 app.use((0, cors_1.default)());
 // Routes
-app.use("/api/category", categoryRoutes_1.default);
 app.use("/api/product", productRoutes_1.default);
 app.use("/api/categories", categoryRoutes_1.default);
 app.use("/api/transactions", transactionRoutes_1.default);

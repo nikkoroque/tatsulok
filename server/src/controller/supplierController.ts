@@ -79,4 +79,20 @@ export const deleteSupplier = async (req: Request, res: Response): Promise<void>
     }
 };
 
+export const validateSupplier = async (req: Request, res: Response): Promise<void> => {
+    const { name } = req.params;
+    try {
+        const existingSupplier = await prisma.suppliers.findFirst({ where: { name: { equals: name, mode: "insensitive" } } });
+        if (existingSupplier) {
+            res.status(409).json({ error: "Supplier already exists." });
+            return;
+        }
+        res.status(200).json({ message: "Supplier is available." });
+    } catch (error) {
+        console.error("Error validating supplier:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
+
+
 

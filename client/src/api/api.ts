@@ -1,3 +1,4 @@
+import { Category } from "@/models/Category";
 import { Supplier } from "@/models/Supplier";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
@@ -6,7 +7,7 @@ export const api = createApi({
 
     reducerPath: "api",
 
-    tagTypes: ["Supplier"],
+    tagTypes: ["Supplier", "Category"],
 
     endpoints: (build) => ({
 
@@ -41,6 +42,48 @@ export const api = createApi({
             }),
             invalidatesTags: ["Supplier"],
         }),
+
+        validateSupplier: build.query<boolean, string>({
+            query: (name) => `/supplier/validate/${name}`,
+            providesTags: ["Supplier"],
+        }),
+
+        // Category
+        getCategories: build.query<Category[], void>({
+            query: () => "/categories",
+            providesTags: ["Category"],
+        }),
+
+        createCategory: build.mutation<Category, Category>({
+            query: (body) => ({
+                url: "/categories",
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ["Category"],
+        }),
+
+        updateCategory: build.mutation<Category, { id: number; data: Partial<Category> }>({
+            query: ({ id, data }) => ({
+                url: `/categories/${id}`,
+                method: "PUT",
+                body: data
+            }),
+            invalidatesTags: ["Category"],
+        }),
+
+        deleteCategory: build.mutation<Category, number>({
+            query: (id) => ({
+                url: `/categories/${id}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Category"],
+        }),
+
+        validateCategory: build.query<boolean, string>({
+            query: (name) => `/categories/validate/${name}`,
+            providesTags: ["Category"],
+        }),
     }),
 });
 
@@ -49,4 +92,10 @@ export const {
   useCreateSupplierMutation,
   useUpdateSupplierMutation,
   useDeleteSupplierMutation,
+  useValidateSupplierQuery,
+  useGetCategoriesQuery,
+  useCreateCategoryMutation,
+  useUpdateCategoryMutation,
+  useDeleteCategoryMutation,
+  useValidateCategoryQuery,
 } = api;

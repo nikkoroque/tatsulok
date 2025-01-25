@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addSupplier, deleteSupplier, getSuppliers, updateSupplier } from "../controller/supplierController";
+import { addSupplier, deleteSupplier, getSuppliers, updateSupplier, validateSupplier } from "../controller/supplierController";
 
 const router = Router();
 
@@ -107,5 +107,26 @@ router.put("/:id", updateSupplier);
  *         description: Supplier deleted successfully
  */
 router.delete("/:id", deleteSupplier);
+
+/**
+ * @swagger
+ * /api/supplier/validate/{name}:
+ *   get:
+ *     summary: Validate a supplier name
+ *     tags: [Supplier]
+ *     parameters:
+ *       - in: path
+ *         name: name
+ *         required: true
+ *         description: Supplier name
+ *     responses:
+ *       200:
+ *         description: Supplier name is available
+ *       400:
+ *         description: Supplier name is already taken
+ *       500:
+ *         description: Internal server error
+ */
+router.get("/validate/:name", validateSupplier);
 
 export default router;

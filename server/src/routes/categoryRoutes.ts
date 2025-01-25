@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getCategories, addCategory, updateCategory, deleteCategory } from "../controller/categoryCrontroller";
+import { getCategories, addCategory, updateCategory, deleteCategory, validateCategory, getCategoryDetails } from "../controller/categoryCrontroller";
 
 const router = Router();
 
@@ -113,5 +113,51 @@ router.put("/:id", updateCategory);
  *         description: Internal server error
  */
 router.delete("/:id", deleteCategory);
+
+/**
+ * @swagger
+ * /api/categories/validate/{name}:
+ *   get:
+ *     summary: Validate a category name
+ *     tags: [Categories]
+ *     parameters:
+ *       - in: path
+ *         name: name
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Category name
+ *     responses:
+ *       200:
+ *         description: Category name is available
+ *       400:
+ *         description: Category name is already taken
+ *       500:
+ *         description: Internal server error
+ */
+router.get("/validate/:name", validateCategory);
+
+/**
+ * @swagger
+ * /api/categories/{id}:
+ *   get:
+ *     summary: Get category details
+ *     tags: [Categories]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Category ID
+ *     responses:
+ *       200:
+ *         description: Category details
+ *       400:
+ *         description: Category ID is required
+ *       500:
+ *         description: Internal server error
+ */
+router.get("/:id", getCategoryDetails);
 
 export default router;
