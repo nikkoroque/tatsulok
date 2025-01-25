@@ -1,4 +1,4 @@
-import { Boxes, LifeBuoy, Send, UserCog, type LucideIcon } from "lucide-react";
+import { Boxes, LifeBuoy, Receipt, Send, UserCog, type LucideIcon } from "lucide-react";
 
 // Define reusable types
 export type NavSubItem = {
@@ -40,17 +40,25 @@ export const routes = {
         },
         {
           title: "Categories",
-          url: "#",
+          url: "/dashboard/categories",
         },
         {
           title: "Suppliers",
           url: "/dashboard/suppliers",
         },
-        {
-            title: "Transactions",
-            url: "#",
-          },
       ],
+    },
+    {
+      title: "POS Transactions",
+      url: "/#",
+      icon: Receipt,
+      items: [
+        {
+          title: "Transactions",
+          url: "#",
+        }
+      ]
+      
     },
     {
       title: "Management",
@@ -61,62 +69,8 @@ export const routes = {
           title: "Users",
           url: "#",
         },
-        // {
-        //   title: "Explorer",
-        //   url: "#",
-        // },
-        // {
-        //   title: "Quantum",
-        //   url: "#",
-        // },
       ],
     },
-    // {
-    //   title: "Documentation",
-    //   url: "#",
-    //   icon: BookOpen,
-    //   items: [
-    //     {
-    //       title: "Introduction",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Get Started",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Tutorials",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Changelog",
-    //       url: "#",
-    //     },
-    //   ],
-    // },
-    // {
-    //   title: "Settings",
-    //   url: "#",
-    //   icon: Settings2,
-    //   items: [
-    //     {
-    //       title: "General",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Team",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Billing",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Limits",
-    //       url: "#",
-    //     },
-    //   ],
-    // },
   ],
   navSecondary: [
     {
@@ -130,21 +84,4 @@ export const routes = {
       icon: Send,
     },
   ],
-//   projects: [
-//     {
-//       name: "Design Engineering",
-//       url: "#",
-//       icon: Frame,
-//     },
-//     {
-//       name: "Sales & Marketing",
-//       url: "#",
-//       icon: PieChart,
-//     },
-//     {
-//       name: "Travel",
-//       url: "#",
-//       icon: Map,
-//     },
-//   ],
 };

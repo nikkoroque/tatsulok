@@ -1,31 +1,31 @@
 "use client";
 
-import {
-  useDeleteSupplierMutation,
-  useCreateSupplierMutation,
-  useGetSuppliersQuery,
-  useUpdateSupplierMutation,
-} from "@/api/api";
 import { useToast } from "@/hooks/use-toast";
 import { GridColDef } from "@mui/x-data-grid";
 import React, { useState } from "react";
 import AppHeader from "../../components/Header/app-header";
 import DataGridTable from "../../components/Datagrid/app-datagrid";
 import AppTitle from "../../components/Title/app-title";
-import { Supplier } from "@/models/Supplier";
 import { ToastAction } from "@/components/ui/toast";
 import { formattedTimestamp } from "@/utils/formatted-time";
 import ActionMenu from "../../components/ActionMenu/app-action-menu";
 import ConfirmationDialog from "../../components/AlertDialog/app-confirmation-dialog";
-import AddEditSupplierModal from "./components/AddEditSupplierModal";
 import { Button } from "@/components/ui/button";
+import { Category } from "@/models/Category";
+import {
+  useDeleteCategoryMutation,
+  useGetCategoriesQuery,
+  useCreateCategoryMutation,
+  useUpdateCategoryMutation,
+} from "@/api/api";
+import AddEditCategoryModal from "./components/AddEditCategoryModal";
 
-const Suppliers = () => {
+const Categories = () => {
   const { toast } = useToast();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [selectedRow, setSelectedRow] = useState<Supplier | null>(null);
-  const { data: supplierData = [], isLoading } = useGetSuppliersQuery();
+  const [selectedRow, setSelectedRow] = useState<Category | null>(null);
+  const { data: categoryData = [], isLoading } = useGetCategoriesQuery();
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [deleteAction, setDeleteAction] = useState<"single" | "mass" | null>(
     null
@@ -35,45 +35,45 @@ const Suppliers = () => {
     null
   );
 
-  const [createSupplier, { isLoading: isCreatingSupplier }] =
-    useCreateSupplierMutation();
-  const [updateSupplier, { isLoading: isUpdatingSupplier }] =
-    useUpdateSupplierMutation();
-  const [deleteSupplier, { isLoading: isDeletingSupplier }] =
-    useDeleteSupplierMutation();
+  const [createCategory, { isLoading: isCreatingCategory }] =
+    useCreateCategoryMutation();
+  const [updateCategory, { isLoading: isUpdatingCategory }] =
+    useUpdateCategoryMutation();
+  const [deleteCategory, { isLoading: isDeletingCategory }] =
+    useDeleteCategoryMutation();
 
-  const handleCreateSupplier = async (supplierData: Supplier) => {
+  const handleCreateCategory = async (categoryData: Category) => {
     try {
-      await createSupplier(supplierData);
+      await createCategory(categoryData);
       toast({
-        title: "Supplier created successfully",
+        title: "Category created successfully",
         description: formattedTimestamp(),
       });
     } catch (error) {
       toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",
-        description: `An error occurred while creating the supplier. ${formattedTimestamp()}`,
+        description: `An error occurred while creating the category. ${formattedTimestamp()}`,
         action: <ToastAction altText="Try again">Try again</ToastAction>,
       });
     }
   };
 
-  const handleUpdateSupplier = async (
+  const handleUpdateCategory = async (
     id: number,
-    supplierData: Partial<Supplier>
+    categoryData: Partial<Category>
   ) => {
     try {
-      await updateSupplier({ id, data: supplierData }).unwrap();
+      await updateCategory({ id, data: categoryData }).unwrap();
       toast({
-        title: "Supplier updated successfully",
+        title: "Category updated successfully",
         description: formattedTimestamp(),
       });
     } catch (error) {
       toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",
-        description: `An error occurred while updating the supplier. ${formattedTimestamp()}`,
+        description: `An error occurred while updating the category. ${formattedTimestamp()}`,
         action: <ToastAction altText="Try again">Try again</ToastAction>,
       });
     }
@@ -88,8 +88,8 @@ const Suppliers = () => {
   const handleMassDeleteClick = () => {
     if (selectedIds.length === 0) {
       toast({
-        title: "No suppliers selected",
-        description: `Please select at least one supplier to delete. ${formattedTimestamp()}`,
+        title: "No categories selected",
+        description: `Please select at least one category to delete. ${formattedTimestamp()}`,
         action: <ToastAction altText="Try again">Try again</ToastAction>,
       });
       return;
@@ -102,19 +102,19 @@ const Suppliers = () => {
     try {
       if (deleteAction === "single" && currentIdToDelete !== null) {
         // Single delete
-        await deleteSupplier(currentIdToDelete).unwrap();
+        await deleteCategory(currentIdToDelete).unwrap();
         toast({
-          title: "Supplier deleted successfully",
+          title: "Category deleted successfully",
           description: formattedTimestamp(),
         });
       } else if (deleteAction === "mass" && selectedIds.length > 0) {
         // Mass delete
         for (const id of selectedIds) {
-          await deleteSupplier(id).unwrap();
+          await deleteCategory(id).unwrap();
         }
         setSelectedIds([]);
         toast({
-          title: "Suppliers deleted successfully",
+          title: "Categories deleted successfully",
           description: formattedTimestamp(),
         });
       }
@@ -122,7 +122,7 @@ const Suppliers = () => {
       toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",
-        description: `An error occurred while deleting the suppliers. ${formattedTimestamp()}`,
+        description: `An error occurred while deleting the categories. ${formattedTimestamp()}`,
         action: <ToastAction altText="Try again">Try again</ToastAction>,
       });
     } finally {
@@ -142,35 +142,33 @@ const Suppliers = () => {
     setSelectedIds(ids);
   };
 
-  const handleEditSupplierRow = (row: Supplier) => {
+  const handleEditCategoryRow = (row: Category) => {
     setSelectedRow(row);
     setIsModalOpen(true);
   };
 
-  // Transform the data to use supplier_id as id
-  const transformedData = supplierData.map((supplier) => ({
-    ...supplier,
-    id: supplier.supplier_id,
+  // Transform the data to use category_id as id
+  const transformedData = categoryData.map((category) => ({
+    ...category,
+    id: category.category_id,
   }));
 
   const columns: GridColDef[] = [
-    { field: "supplier_id", headerName: "Supplier ID", flex: 0, minWidth: 100 },
     { field: "name", headerName: "Name", flex: 0, minWidth: 150 },
-    { field: "contact_email", headerName: "E-mail", flex: 0, minWidth: 200 },
-    { field: "contact_phone", headerName: "Contact", flex: 0, minWidth: 150 },
-    { field: "address", headerName: "Address", flex: 2, width: 350 },
+    { field: "description", headerName: "Description", flex: 1, minWidth: 200 },
     {
       field: "actions",
       headerName: "Actions",
       width: 70,
       headerAlign: "center",
       align: "center",
+      sortable: false,
       renderCell: (params) => (
         <ActionMenu
           row={params.row}
-          onEdit={handleEditSupplierRow}
+          onEdit={handleEditCategoryRow}
           onDelete={handleDeleteClick}
-          idKey="supplier_id"
+          idKey="category_id"
         />
       ),
     },
@@ -182,10 +180,10 @@ const Suppliers = () => {
       <AppHeader
         breadcrumbLink="/dashboard"
         breadcrumbLinkText="Dashboard"
-        breadcrumbPage="Supplier"
+        breadcrumbPage="Category"
       />
       <div className="flex justify-between items-center">
-        <AppTitle title="Suppliers" />
+        <AppTitle title="Categories" />
         <div className="flex justify-between items-center space-x-2">
           <Button
             variant="outline"
@@ -214,33 +212,35 @@ const Suppliers = () => {
         columns={columns}
         onRowSelectionModelChange={handleSelectionChange}
       />
-      {/* CREATE SUPPLIER MODAL */}
-      <AddEditSupplierModal
+
+      {/* CREATE CATEGORY MODAL */}
+      <AddEditCategoryModal
         isOpen={isModalOpen}
         onClose={() => {
           setIsModalOpen(false);
           setSelectedRow(null);
         }}
-        onCreate={handleCreateSupplier}
-        onUpdate={handleUpdateSupplier}
+        onCreate={handleCreateCategory}
+        onUpdate={handleUpdateCategory}
         row={selectedRow}
       />
+
       {/* CONFIRMATION DIALOG */}
       <ConfirmationDialog
         isOpen={isDialogOpen}
         title={
-          deleteAction === "single" ? "Delete Supplier" : "Delete Suppliers"
+          deleteAction === "single" ? "Delete Category" : "Delete Categories"
         }
         onConfirm={handleConfirmDelete}
         onCancel={handleCancelDelete}
         message={
           deleteAction === "single"
-            ? "Are you sure you want to delete this supplier?"
-            : "Are you sure you want to delete the selected suppliers?"
+            ? "Are you sure you want to delete this category?"
+            : "Are you sure you want to delete the selected categories?"
         }
       />
     </>
   );
 };
 
-export default Suppliers;
+export default Categories;

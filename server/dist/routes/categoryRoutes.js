@@ -110,4 +110,48 @@ router.put("/:id", categoryCrontroller_1.updateCategory);
  *         description: Internal server error
  */
 router.delete("/:id", categoryCrontroller_1.deleteCategory);
+/**
+ * @swagger
+ * /api/categories/validate/{name}:
+ *   get:
+ *     summary: Validate a category name
+ *     tags: [Categories]
+ *     parameters:
+ *       - in: path
+ *         name: name
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Category name
+ *     responses:
+ *       200:
+ *         description: Category name is available
+ *       400:
+ *         description: Category name is already taken
+ *       500:
+ *         description: Internal server error
+ */
+router.get("/validate/:name", categoryCrontroller_1.validateCategory);
+/**
+ * @swagger
+ * /api/categories/{id}:
+ *   get:
+ *     summary: Get category details
+ *     tags: [Categories]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Category ID
+ *     responses:
+ *       200:
+ *         description: Category details
+ *       400:
+ *         description: Category ID is required
+ *       500:
+ *         description: Internal server error
+ */
+router.get("/:id", categoryCrontroller_1.getCategoryDetails);
 exports.default = router;

@@ -2,7 +2,7 @@ import { Supplier } from "@/models/Supplier";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -14,12 +14,16 @@ import {
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import useDebounce from "@/hooks/use-debounce";
+import useValidation from "@/hooks/use-validation";
+import { useValidateSupplierQuery } from "@/api/api";
 
 type AddEditSupplierModalProps = {
   isOpen: boolean;
@@ -36,6 +40,8 @@ const AddEditSupplierModal = ({
   onUpdate,
   row,
 }: AddEditSupplierModalProps) => {
+  const [supplierName, setSupplierName] = useState<string>("");
+  const debouncedSupplierName = useDebounce(supplierName, 100);
     
   const formSchema = z.object({
     name: z
@@ -67,25 +73,46 @@ const AddEditSupplierModal = ({
       contact_phone: "",
       address: "",
     },
+    mode: "onChange",
   });
 
   useEffect(() => {
-    if (row) {
-      form.reset({
-        name: row.name || "",
-        contact_email: row.contact_email || "",
-        contact_phone: row.contact_phone || "",
-        address: row.address || "",
-      });
-    } else {
+    if (!isOpen) {
       form.reset({
         name: "",
         contact_email: "",
         contact_phone: "",
         address: "",
       });
+    } else if (row) {
+      form.reset({
+        name: row.name || "",
+        contact_email: row.contact_email || "",
+        contact_phone: row.contact_phone || "",
+        address: row.address || "",
+      });
     }
-  }, [row, form]);
+  }, [isOpen, row, form]);
+
+  useEffect(() => {
+    const subscription = form.watch((value) => {
+        const trimmedSupplierName = (value.name ?? "").trim();
+        setSupplierName(trimmedSupplierName);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [form]);
+
+  const {
+    error: supplierNameError,
+    isChecking: isCheckingSupplierName,
+  } = useValidation<boolean>({
+    value: debouncedSupplierName,
+    originalValue: row?.name,
+    validateQuery: (value, options) => useValidateSupplierQuery(value, options),
+    entityName: "Supplier",
+    conflictMessage: "Supplier name already exists.",
+  });
 
   const handleSubmitSupplier = (values: z.infer<typeof formSchema>) => {
     const submissionData: Supplier = {
@@ -104,7 +131,7 @@ const AddEditSupplierModal = ({
 
     form.reset();
     onClose();
-  };
+  }
 
   if (!isOpen) return null;
 
@@ -134,6 +161,14 @@ const AddEditSupplierModal = ({
                     <FormControl>
                       <Input placeholder="e.g. Tatsulok" {...field} />
                     </FormControl>
+                    <FormDescription>
+                      {isCheckingSupplierName && (
+                        <span className="text-sm text-blue-500">Checking supplier name...</span>
+                      )}
+                      {supplierNameError && (
+                        <span className="text-sm text-red-500">{supplierNameError}</span>
+                      )}
+                    </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -145,7 +180,7 @@ const AddEditSupplierModal = ({
                   name="contact_email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>E-mail</FormLabel>
+                      <FormLabel>E-mail <sup className="text-red-900">*</sup></FormLabel>
                       <FormControl>
                         <Input
                         type="email"
@@ -165,7 +200,7 @@ const AddEditSupplierModal = ({
                   name="contact_phone"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Phone</FormLabel>
+                      <FormLabel>Phone <sup className="text-red-900">*</sup></FormLabel>
                       <FormControl>
                         <Input
                           placeholder="e.g. 09123456789"
@@ -184,7 +219,7 @@ const AddEditSupplierModal = ({
                   name="address"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Address</FormLabel>
+                      <FormLabel>Address <sup className="text-red-900">*</sup></FormLabel>
                       <FormControl>
                         <Input
                           placeholder="e.g. 123 Anywhere St."
@@ -206,8 +241,8 @@ const AddEditSupplierModal = ({
                 </Button>
                 <Button
                   type="submit"
-                  className={`hover:bg-primary
-                  `}
+                  disabled={!!supplierNameError}
+                  className={`hover:bg-primary ${supplierNameError ? "disabled:opacity-50" : ""}`}
                 >
                   {row ? "Update" : "Create"}
                 </Button>

@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteCategory = exports.updateCategory = exports.addCategory = exports.getCategories = void 0;
+exports.validateCategory = exports.getCategoryDetails = exports.deleteCategory = exports.updateCategory = exports.addCategory = exports.getCategories = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const getCategories = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -33,7 +33,9 @@ exports.getCategories = getCategories;
 const addCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, description } = req.body;
     try {
-        const newCategory = yield prisma.categories.create({ data: { name, description } });
+        const newCategory = yield prisma.categories.create({
+            data: { name, description },
+        });
         res.status(201).json(newCategory);
     }
     catch (error) {
@@ -52,7 +54,7 @@ const updateCategory = (req, res) => __awaiter(void 0, void 0, void 0, function*
         }
         const updatedCategory = yield prisma.categories.update({
             where: { category_id: Number(id) },
-            data: { name, description }
+            data: { name, description },
         });
         res.status(200).json(updatedCategory);
     }
@@ -78,3 +80,45 @@ const deleteCategory = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.deleteCategory = deleteCategory;
+const getCategoryDetails = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    try {
+        if (!id) {
+            res.status(400).json({ error: "Category ID is required" });
+            return;
+        }
+        const category = yield prisma.categories.findUnique({ where: { category_id: Number(id) } });
+        if (!category) {
+            res.status(404).json({ error: "Category not found" });
+            return;
+        }
+        res.json(category);
+    }
+    catch (error) {
+        console.error("Error retrieving category details:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+exports.getCategoryDetails = getCategoryDetails;
+const validateCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { name } = req.params;
+    if (!name) {
+        res.status(400).json({ error: "Name is required" });
+        return;
+    }
+    try {
+        const existingCategory = yield prisma.categories.findFirst({
+            where: { name: { equals: name, mode: "insensitive" } },
+        });
+        if (existingCategory) {
+            res.status(409).json({ error: "Category already exists." });
+            return;
+        }
+        res.status(200).json({ message: "Category is available." });
+    }
+    catch (error) {
+        console.error("Error validating category:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+exports.validateCategory = validateCategory;

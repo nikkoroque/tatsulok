@@ -104,4 +104,24 @@ router.put("/:id", supplierController_1.updateSupplier);
  *         description: Supplier deleted successfully
  */
 router.delete("/:id", supplierController_1.deleteSupplier);
+/**
+ * @swagger
+ * /api/supplier/validate/{name}:
+ *   get:
+ *     summary: Validate a supplier name
+ *     tags: [Supplier]
+ *     parameters:
+ *       - in: path
+ *         name: name
+ *         required: true
+ *         description: Supplier name
+ *     responses:
+ *       200:
+ *         description: Supplier name is available
+ *       400:
+ *         description: Supplier name is already taken
+ *       500:
+ *         description: Internal server error
+ */
+router.get("/validate/:name", supplierController_1.validateSupplier);
 exports.default = router;
