@@ -8,7 +8,7 @@ import AppTitle from '../../components/Title/app-title';
 import DataGridTable from "../../components/Datagrid/app-datagrid";
 
 const Transactions = () => {
-  const { data: transactionData = [], isLoading } = useGetTransactionsQuery()
+  const { data: transactionData = [] } = useGetTransactionsQuery()
 
   const transformedData = transactionData?.map((transaction) => ({
     ...transaction,

@@ -25,7 +25,7 @@ const Categories = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [selectedRow, setSelectedRow] = useState<Category | null>(null);
-  const { data: categoryData = [], isLoading } = useGetCategoriesQuery();
+  const { data: categoryData = [] } = useGetCategoriesQuery();
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [deleteAction, setDeleteAction] = useState<"single" | "mass" | null>(
     null
@@ -35,11 +35,11 @@ const Categories = () => {
     null
   );
 
-  const [createCategory, { isLoading: isCreatingCategory }] =
+  const [createCategory] =
     useCreateCategoryMutation();
-  const [updateCategory, { isLoading: isUpdatingCategory }] =
+  const [updateCategory] =
     useUpdateCategoryMutation();
-  const [deleteCategory, { isLoading: isDeletingCategory }] =
+  const [deleteCategory] =
     useDeleteCategoryMutation();
 
   const handleCreateCategory = async (categoryData: Category) => {
@@ -53,7 +53,7 @@ const Categories = () => {
       toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",
-        description: `An error occurred while creating the category. ${formattedTimestamp()}`,
+        description: `An error occurred while creating the category. ${formattedTimestamp()} : ${error}`,
         action: <ToastAction altText="Try again">Try again</ToastAction>,
       });
     }
@@ -73,7 +73,7 @@ const Categories = () => {
       toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",
-        description: `An error occurred while updating the category. ${formattedTimestamp()}`,
+        description: `An error occurred while updating the category. ${formattedTimestamp()} : ${error}`,
         action: <ToastAction altText="Try again">Try again</ToastAction>,
       });
     }
@@ -122,7 +122,7 @@ const Categories = () => {
       toast({
         variant: "destructive",
         title: "Uh oh! Something went wrong.",
-        description: `An error occurred while deleting the categories. ${formattedTimestamp()}`,
+        description: `An error occurred while deleting the categories. ${formattedTimestamp()} : ${error}`,
         action: <ToastAction altText="Try again">Try again</ToastAction>,
       });
     } finally {

@@ -1,6 +1,6 @@
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { SidebarInset } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/app-sidebar";
+import { AppSidebar } from "@/app/dashboard/components/app-sidebar";
 import { ReactNode } from "react";
 import StoreProvider from "@/app/redux";
 
