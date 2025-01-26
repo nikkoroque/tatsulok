@@ -32,6 +32,7 @@ model products {
   category_id            Int
   quantity               Int                      @default(0)
   price                  Decimal                  @db.Decimal(10, 2)
+  img                    String?
   created_at             DateTime?                @default(now()) @db.Timestamp(6)
   updated_at             DateTime?                @default(now()) @db.Timestamp(6)
   inventory_transactions inventory_transactions[]
