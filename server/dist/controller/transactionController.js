@@ -17,7 +17,7 @@ const VALID_TRANSACTION_TYPES = ['IN', 'OUT', 'SALE', 'RETURN'];
 const adjustInventory = (tx, adjustment) => __awaiter(void 0, void 0, void 0, function* () {
     const product = yield tx.products.findUnique({
         where: { product_id: adjustment.productId },
-        select: { quantity: true }
+        select: { quantity: true, price: true }
     });
     if (!product) {
         throw new Error('Product not found');
@@ -50,7 +50,7 @@ const adjustInventory = (tx, adjustment) => __awaiter(void 0, void 0, void 0, fu
 // Create Transaction
 const createTransaction = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { productId, quantity, transactionType, remarks } = req.body;
+        const { productId, quantity, transactionType, remarks, amount } = req.body;
         if (!VALID_TRANSACTION_TYPES.includes(transactionType)) {
             res.status(400).json({ error: 'Invalid transaction type' });
             return;
@@ -69,6 +69,7 @@ const createTransaction = (req, res) => __awaiter(void 0, void 0, void 0, functi
                     quantity,
                     transaction_type: transactionType,
                     remarks,
+                    amount,
                     transaction_date: new Date()
                 },
                 include: {
@@ -129,7 +130,7 @@ exports.getTransaction = getTransaction;
 const updateTransaction = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const { quantity: newQuantity, remarks } = req.body;
+        const { quantity: newQuantity, remarks, amount } = req.body;
         const result = yield prisma.$transaction((tx) => __awaiter(void 0, void 0, void 0, function* () {
             // Get original transaction
             const originalTransaction = yield tx.inventory_transactions.findUnique({
@@ -146,13 +147,13 @@ const updateTransaction = (req, res) => __awaiter(void 0, void 0, void 0, functi
                 yield adjustInventory(tx, {
                     productId: originalTransaction.product_id,
                     quantity: originalTransaction.quantity,
-                    transactionType: reverseTransactionType(originalTransaction.transaction_type)
+                    transactionType: reverseTransactionType(originalTransaction.transaction_type),
                 });
                 // Apply new transaction
                 yield adjustInventory(tx, {
                     productId: originalTransaction.product_id,
                     quantity: newQuantity,
-                    transactionType: originalTransaction.transaction_type
+                    transactionType: originalTransaction.transaction_type,
                 });
             }
             // Update transaction record
@@ -225,7 +226,8 @@ const voidTransaction = (req, res) => __awaiter(void 0, void 0, void 0, function
                     quantity: originalTransaction.quantity,
                     transaction_type: reversalType,
                     remarks: `Reversal of Transaction #${id} - ${voidReason}`,
-                    transaction_date: new Date()
+                    transaction_date: new Date(),
+                    amount: originalTransaction.amount
                 }
             });
             // Adjust inventory
@@ -287,7 +289,8 @@ const getInventoryTransactions = (req, res) => __awaiter(void 0, void 0, void 0,
                 quantity: true,
                 transaction_type: true,
                 transaction_date: true,
-                remarks: true
+                remarks: true,
+                amount: true
             },
         });
         res.json(transactions);

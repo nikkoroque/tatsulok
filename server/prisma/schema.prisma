@@ -22,6 +22,7 @@ model inventory_transactions {
   quantity         Int
   transaction_date DateTime? @default(now()) @db.Timestamp(6)
   remarks          String?
+  amount           Decimal?  @db.Decimal(10, 2)
   products         products? @relation(fields: [product_id], references: [product_id], onDelete: NoAction, onUpdate: NoAction)
 }
 
