@@ -34,6 +34,17 @@ type AddEditCategoryModalProps = {
   row?: Category | null;
 };
 
+// Define the options type
+type ValidationOptions = {
+  skip?: boolean;
+};
+
+// Create a custom hook for category validation
+const useCategoryValidation = () => {
+  // Return the hook itself instead of calling it
+  return useValidateCategoryQuery;
+};
+
 const AddEditCategoryModal = ({
   isOpen,
   onClose,
@@ -87,13 +98,16 @@ const AddEditCategoryModal = ({
     return () => subscription.unsubscribe();
   }, [form]);
 
+  // Get the query hook
+  const validateQuery = useCategoryValidation();
+
   const {
     error: categoryNameError,
     isChecking: isCheckingCategoryName,
   } = useValidation<boolean>({
     value: debouncedCategoryName,
     originalValue: row?.name,
-    validateQuery: (value, options) => useValidateCategoryQuery(value, options),
+    validateQuery: (name: string, options: ValidationOptions) => validateQuery(name, options),
     entityName: "Category",
     conflictMessage: "Category name already exists.",
   });

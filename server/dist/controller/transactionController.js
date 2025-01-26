@@ -198,11 +198,21 @@ const voidTransaction = (req, res) => __awaiter(void 0, void 0, void 0, function
         const { id } = req.params;
         const { voidReason } = req.body;
         const result = yield prisma.$transaction((tx) => __awaiter(void 0, void 0, void 0, function* () {
+            var _a, _b;
+            // First check if this transaction is already voided
             const originalTransaction = yield tx.inventory_transactions.findUnique({
                 where: { transaction_id: Number(id) }
             });
             if (!originalTransaction) {
                 throw new Error('Transaction not found');
+            }
+            // Check if this transaction is already voided
+            if ((_a = originalTransaction.remarks) === null || _a === void 0 ? void 0 : _a.includes('[VOIDED:')) {
+                throw new Error('Transaction has already been voided');
+            }
+            // Check if this transaction is a reversal transaction
+            if ((_b = originalTransaction.remarks) === null || _b === void 0 ? void 0 : _b.includes('Reversal of Transaction #')) {
+                throw new Error('Cannot void a reversal transaction');
             }
             if (!originalTransaction.product_id || !originalTransaction.transaction_type) {
                 throw new Error('Invalid transaction data');

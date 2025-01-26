@@ -33,6 +33,17 @@ type AddEditSupplierModalProps = {
   row?: Supplier | null;
 };
 
+// Define the options type
+type ValidationOptions = {
+  skip?: boolean;
+};
+
+// Create a custom hook for supplier validation
+const useSupplierValidation = () => {
+  // Return the hook itself instead of calling it
+  return useValidateSupplierQuery;
+};
+
 const AddEditSupplierModal = ({
   isOpen,
   onClose,
@@ -103,13 +114,16 @@ const AddEditSupplierModal = ({
     return () => subscription.unsubscribe();
   }, [form]);
 
+  // Get the query hook
+  const validateQuery = useSupplierValidation();
+
   const {
     error: supplierNameError,
     isChecking: isCheckingSupplierName,
   } = useValidation<boolean>({
     value: debouncedSupplierName,
     originalValue: row?.name,
-    validateQuery: (value, options) => useValidateSupplierQuery(value, options),
+    validateQuery: (name: string, options: ValidationOptions) => validateQuery(name, options),
     entityName: "Supplier",
     conflictMessage: "Supplier name already exists.",
   });

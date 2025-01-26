@@ -224,12 +224,23 @@ export const voidTransaction = async (req: Request, res: Response): Promise<void
     const { voidReason } = req.body;
 
     const result = await prisma.$transaction(async (tx) => {
+      // First check if this transaction is already voided
       const originalTransaction = await tx.inventory_transactions.findUnique({
         where: { transaction_id: Number(id) }
       });
 
       if (!originalTransaction) {
         throw new Error('Transaction not found');
+      }
+
+      // Check if this transaction is already voided
+      if (originalTransaction.remarks?.includes('[VOIDED:')) {
+        throw new Error('Transaction has already been voided');
+      }
+
+      // Check if this transaction is a reversal transaction
+      if (originalTransaction.remarks?.includes('Reversal of Transaction #')) {
+        throw new Error('Cannot void a reversal transaction');
       }
 
       if (!originalTransaction.product_id || !originalTransaction.transaction_type) {

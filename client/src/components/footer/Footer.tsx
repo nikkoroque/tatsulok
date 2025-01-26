@@ -1,6 +1,4 @@
 import React from "react";
-import { Input } from "../ui/input";
-import Image from "next/image";
 import { Separator } from "../ui/separator";
 import { Pyramid } from "lucide-react";
 
