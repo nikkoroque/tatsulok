@@ -1,4 +1,4 @@
-import { Boxes, LifeBuoy, Receipt, Send, UserCog, type LucideIcon } from "lucide-react";
+import { Boxes, LifeBuoy, ReceiptText, Send, UserCog, type LucideIcon } from "lucide-react";
 
 // Define reusable types
 export type NavSubItem = {
@@ -49,13 +49,13 @@ export const routes = {
       ],
     },
     {
-      title: "POS Transactions",
-      url: "/#",
-      icon: Receipt,
+      title: "Transaction Logs",
+      url: "#",
+      icon: ReceiptText,
       items: [
         {
           title: "Transactions",
-          url: "#",
+          url: "/transactions",
         }
       ]
       
