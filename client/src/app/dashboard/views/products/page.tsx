@@ -1,4 +1,4 @@
-import Hero from '@/app/home/components/Hero';
+import Hero from '@/app/(public)/home/components/Hero';
 import React from 'react'
 import AppHeader from '../../components/Header/app-header';
 

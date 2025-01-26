@@ -114,7 +114,7 @@ const Services = () => {
   const [billing, setBilling] = useState<"monthly" | "yearly">("monthly");
 
   return (
-    <div className="container mx-auto px-4 max-w-7xl">
+    <div className="container mx-auto px-4 max-w-7xl py-16">
       <div className="relative">
         <div className="sm:flex sm:items-center sm:justify-between">
           <div>

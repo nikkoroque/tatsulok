@@ -1,9 +1,10 @@
 import React from "react";
-import Hero from "@/app/home/components/Hero";
-import Navbar from "@/components/navbar/Navbar";
+import Hero from "./components/Hero";
 import DummyContent from "@/components/card-carousel/DummyContent";
 import CardCarousel from "@/components/card-carousel/CardCarousel";
-import Services from "./components/Services";
+import Services from "@/components/services/Services";
+import { MarqueeDemo } from "@/components/marquee/Marquee";
+import Faq from "@/components/faq/Faq";
 
 const carouselData = [
   {
@@ -47,10 +48,11 @@ const carouselData = [
 const Home = () => {
   return (
     <>
-      <Navbar />
       <Hero />
       <CardCarousel data={carouselData} title="Inventory made easy" />
       <Services />
+      <Faq />
+      <MarqueeDemo />
     </>
   );
 };

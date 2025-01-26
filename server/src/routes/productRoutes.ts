@@ -5,7 +5,7 @@ const router = Router();
 
 /**
  * @swagger
- * /api/product:
+ * /api/products:
  *   get:
  *     summary: Get all products
  *     tags: [Products]
@@ -19,18 +19,20 @@ const router = Router();
  *               items:
  *                 type: object
  *                 properties:
- *                   id:
- *                     type: string
+ *                   product_id:
+ *                     type: integer
  *                   name:
  *                     type: string
  *                   description:
  *                     type: string
  *                   category_id:
- *                     type: string
+ *                     type: integer
  *                   quantity:
  *                     type: integer
  *                   price:
  *                     type: integer
+ *                   img:
+ *                     type: string
  *                   created_at:
  *                     type: string
  *                   updated_at:
@@ -41,7 +43,7 @@ router.get("/", getProducts);
 
 /**
  * @swagger
- * /api/product:
+ * /api/products:
  *   post:
  *     summary: Create a new product
  *     tags: [Products]
@@ -53,7 +55,7 @@ router.get("/", getProducts);
  *             type: object
  *             properties:
  *                   name:
- *                     type: string
+ *                     type: string 
  *                   description:
  *                     type: string
  *                   category_id:
@@ -62,6 +64,8 @@ router.get("/", getProducts);
  *                     type: integer
  *                   price:
  *                     type: integer
+ *                   img:
+ *                     type: string
  *                   created_at:
  *                     type: string
  *                     format: date-time
@@ -77,7 +81,7 @@ router.post("/", addProduct);
 
 /**
  * @swagger
- * /api/product/{id}:
+ * /api/products/{id}:
  *   put:
  *     summary: Update a product
  *     tags: [Products]
@@ -103,6 +107,8 @@ router.post("/", addProduct);
  *                     type: integer
  *                   price:
  *                     type: integer
+ *                   img:
+ *                     type: string
  *                   created_at:
  *                     type: string
  *                     format: date-time
@@ -118,7 +124,7 @@ router.put("/:id", updateProduct);
 
 /**
  * @swagger
- * /api/product/{id}:
+ * /api/products/{id}:
  *   delete:
  *     summary: Delete a product
  *     tags: [Products]
