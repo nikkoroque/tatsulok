@@ -19,6 +19,7 @@ const router = express.Router();
  *         - productId
  *         - quantity
  *         - transactionType
+ *         - amount
  *       properties:
  *         productId:
  *           type: integer
@@ -26,6 +27,10 @@ const router = express.Router();
  *         quantity:
  *           type: integer
  *           description: The quantity of the transaction
+ *         amount:
+ *           type: number
+ *           format: float
+ *           description: The amount/price for the transaction
  *         transactionType:
  *           type: string
  *           enum: [IN, OUT, SALE, RETURN]
@@ -59,6 +64,10 @@ const router = express.Router();
  *         quantity:
  *           type: integer
  *           description: Transaction quantity
+ *         amount:
+ *           type: number
+ *           format: float
+ *           description: Transaction amount/price
  *         transaction_date:
  *           type: string
  *           format: date-time
@@ -175,6 +184,10 @@ router.get('/:id', getTransaction);
  *               quantity:
  *                 type: integer
  *                 description: New quantity
+ *               amount:
+ *                 type: number
+ *                 format: float
+ *                 description: New transaction amount
  *               remarks:
  *                 type: string
  *                 description: Updated remarks

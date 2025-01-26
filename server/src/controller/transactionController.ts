@@ -25,7 +25,7 @@ const adjustInventory = async (
 ): Promise<number> => {
   const product = await tx.products.findUnique({
     where: { product_id: adjustment.productId },
-    select: { quantity: true }
+    select: { quantity: true, price: true }
   });
 
   if (!product) {
@@ -63,7 +63,7 @@ const adjustInventory = async (
 // Create Transaction
 export const createTransaction = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { productId, quantity, transactionType, remarks } = req.body;
+    const { productId, quantity, transactionType, remarks, amount } = req.body;
 
     if (!VALID_TRANSACTION_TYPES.includes(transactionType)) {
       res.status(400).json({ error: 'Invalid transaction type' });
@@ -86,6 +86,7 @@ export const createTransaction = async (req: Request, res: Response): Promise<vo
           quantity,
           transaction_type: transactionType,
           remarks,
+          amount,
           transaction_date: new Date()
         },
         include: {
@@ -147,7 +148,7 @@ export const getTransaction = async (req: Request, res: Response): Promise<void>
 export const updateTransaction = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
-    const { quantity: newQuantity, remarks } = req.body;
+    const { quantity: newQuantity, remarks, amount } = req.body;
 
     const result = await prisma.$transaction(async (tx) => {
       // Get original transaction
@@ -168,14 +169,14 @@ export const updateTransaction = async (req: Request, res: Response): Promise<vo
         await adjustInventory(tx, {
           productId: originalTransaction.product_id,
           quantity: originalTransaction.quantity,
-          transactionType: reverseTransactionType(originalTransaction.transaction_type as TransactionType)
+          transactionType: reverseTransactionType(originalTransaction.transaction_type as TransactionType),
         });
 
         // Apply new transaction
         await adjustInventory(tx, {
           productId: originalTransaction.product_id,
           quantity: newQuantity,
-          transactionType: originalTransaction.transaction_type as TransactionType
+          transactionType: originalTransaction.transaction_type as TransactionType,
         });
       }
 
@@ -256,7 +257,8 @@ export const voidTransaction = async (req: Request, res: Response): Promise<void
           quantity: originalTransaction.quantity,
           transaction_type: reversalType,
           remarks: `Reversal of Transaction #${id} - ${voidReason}`,
-          transaction_date: new Date()
+          transaction_date: new Date(),
+          amount: originalTransaction.amount
         }
       });
 
@@ -322,7 +324,8 @@ export const getInventoryTransactions = async (req: Request, res: Response): Pro
         quantity: true,
         transaction_type: true,
         transaction_date: true,
-        remarks: true
+        remarks: true,
+        amount: true
       },
     });
     res.json(transactions);

@@ -19,6 +19,7 @@ const Transactions = () => {
     { field: "transaction_id", headerName: "ID", minWidth: 100 },
     { field: "product_id", headerName: "Product ID", minWidth: 150 },
     { field: "quantity", headerName: "Quantity", minWidth: 80 },
+    { field: "amount", headerName: "Amount", minWidth: 80 },
     { field: "transaction_type", headerName: "Transaction Type", minWidth: 150 },
     { 
       field: "transaction_date", 
