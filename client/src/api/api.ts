@@ -1,5 +1,6 @@
 import { Category } from "@/models/Category";
 import { Supplier } from "@/models/Supplier";
+import { Transaction } from "@/models/Transaction";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const api = createApi({
@@ -7,7 +8,7 @@ export const api = createApi({
 
     reducerPath: "api",
 
-    tagTypes: ["Supplier", "Category"],
+    tagTypes: ["Supplier", "Category", "Transaction"],
 
     endpoints: (build) => ({
 
@@ -84,6 +85,39 @@ export const api = createApi({
             query: (name) => `/categories/validate/${name}`,
             providesTags: ["Category"],
         }),
+
+        // Transaction
+        getTransactions: build.query<Transaction[], void>({
+            query: () => "/transactions",
+            providesTags: ["Transaction"],
+        }),
+
+        createTransaction: build.mutation<Transaction, Transaction>({
+            query: (body) => ({
+                url: "/transactions",
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ["Transaction"],
+        }),
+
+        voidTransaction: build.mutation<Transaction, { id: number; voidReason: string }>({
+            query: ({ id, voidReason }) => ({
+                url: `/transactions/${id}/void`,
+                method: "POST",
+                body: { voidReason },
+            }),
+            invalidatesTags: ["Transaction"],
+        }),
+
+        updateTransaction: build.mutation<Transaction, { id: number; data: Partial<Transaction> }>({
+            query: ({ id, data }) => ({
+                url: `/transactions/${id}`,
+                method: "PUT",
+                body: data
+            }),
+            invalidatesTags: ["Transaction"],
+        }),
     }),
 });
 
@@ -98,4 +132,8 @@ export const {
   useUpdateCategoryMutation,
   useDeleteCategoryMutation,
   useValidateCategoryQuery,
+  useGetTransactionsQuery,
+  useCreateTransactionMutation,
+  useVoidTransactionMutation,
+  useUpdateTransactionMutation,
 } = api;
