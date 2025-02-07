@@ -98,7 +98,8 @@ const config: Config = {
     			'border-beam': 'border-beam calc(var(--duration)*1s) infinite linear',
     			rainbow: 'rainbow var(--speed, 2s) infinite linear',
     			marquee: 'marquee var(--duration) infinite linear',
-    			'marquee-vertical': 'marquee-vertical var(--duration) linear infinite'
+    			'marquee-vertical': 'marquee-vertical var(--duration) linear infinite',
+				spotlight: "spotlight 2s ease .75s 1 forwards",
     		},
     		keyframes: {
     			pulse: {
@@ -137,8 +138,18 @@ const config: Config = {
     				to: {
     					transform: 'translateY(calc(-100% - var(--gap)))'
     				}
-    			}
-    		}
+    			},
+				spotlight: {
+					"0%": {
+					  opacity: '0%',
+					  transform: "translate(-72%, -62%) scale(0.5)",
+					},
+					"100%": {
+					  opacity: '1',
+					  transform: "translate(-50%,-40%) scale(1)",
+					},
+    		},
+		}
     	}
     },
 	plugins: [require("tailwindcss-animate"), addVariablesForColors,function ({ matchUtilities, theme }: any) {
