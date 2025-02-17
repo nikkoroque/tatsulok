@@ -11,7 +11,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-y-10 lg:grid-cols-4">
           <div className="flex items-center gap-2">
             <Pyramid className="w-10 h-10" />
-            <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-4xl">
+            <h1 className="scroll-m-20 text-4xl font-semibold tracking-tight lg:text-4xl">
               Tatsulok
             </h1>
           </div>
