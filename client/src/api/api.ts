@@ -1,6 +1,7 @@
 import { Category } from "@/models/Category";
 import { Supplier } from "@/models/Supplier";
 import { Transaction } from "@/models/Transaction";
+import {Product} from "@/models/Products"
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const api = createApi({
@@ -8,7 +9,7 @@ export const api = createApi({
 
     reducerPath: "api",
 
-    tagTypes: ["Supplier", "Category", "Transaction"],
+    tagTypes: ["Supplier", "Category", "Transaction", "Product"],
 
     endpoints: (build) => ({
 
@@ -118,6 +119,43 @@ export const api = createApi({
             }),
             invalidatesTags: ["Transaction"],
         }),
+
+        //Products
+        getProducts: build.query<Product[], void>({
+            query: () => "/products",
+            providesTags: ["Product"],
+        }),
+
+        createProduct: build.mutation<Product, Product>({
+            query: (body) => ({
+                url: "/products",
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ["Product"],
+        }),
+        
+        updateProduct: build.mutation<Product, { id: number; data: Partial<Product> }>({
+            query: ({ id, data }) => ({
+                url: `/products/${id}`,
+                method: "PUT",
+                body: data
+            }),
+            invalidatesTags: ["Product"],
+        }),
+        
+        deleteProduct: build.mutation<Product, number>({
+            query: (id) => ({
+                url: `/products/${id}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["Product"],
+        }),
+        
+        validateProduct: build.query<boolean, string>({
+            query: (name) => `/products/validate/${name}`,
+            providesTags: ["Product"],
+        }),
     }),
 });
 
@@ -136,4 +174,9 @@ export const {
   useCreateTransactionMutation,
   useVoidTransactionMutation,
   useUpdateTransactionMutation,
+  useGetProductsQuery,
+  useCreateProductMutation,
+  useUpdateProductMutation,
+  useDeleteProductMutation,
+  useValidateProductQuery,
 } = api;

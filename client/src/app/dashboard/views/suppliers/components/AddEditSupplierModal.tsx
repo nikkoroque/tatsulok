@@ -53,7 +53,7 @@ const AddEditSupplierModal = ({
 }: AddEditSupplierModalProps) => {
   const [supplierName, setSupplierName] = useState<string>("");
   const debouncedSupplierName = useDebounce(supplierName, 100);
-    
+
   const formSchema = z.object({
     name: z
       .string()
@@ -107,8 +107,8 @@ const AddEditSupplierModal = ({
 
   useEffect(() => {
     const subscription = form.watch((value) => {
-        const trimmedSupplierName = (value.name ?? "").trim();
-        setSupplierName(trimmedSupplierName);
+      const trimmedSupplierName = (value.name ?? "").trim();
+      setSupplierName(trimmedSupplierName);
     });
 
     return () => subscription.unsubscribe();
@@ -197,7 +197,7 @@ const AddEditSupplierModal = ({
                       <FormLabel>E-mail <sup className="text-red-900">*</sup></FormLabel>
                       <FormControl>
                         <Input
-                        type="email"
+                          type="email"
                           placeholder="e.g. info@tatsulok.com"
                           {...field} // Binds the value to the form
                         />
