@@ -14,6 +14,7 @@ import { formattedTimestamp } from '@/utils/formatted-time';
 import { ToastAction } from '@/components/ui/toast';
 import AddEditProductModal from './components/AddEditProductModal';
 import ConfirmationDialog from '../../components/AlertDialog/app-confirmation-dialog';
+import { DeleteButton } from '../../components/DeleteButton/app-delete-button';
 
 
 
@@ -171,15 +172,11 @@ const ProductsPage = () => {
           onEdit={handleEditProductRow}
           onDelete={handleDeleteClick}
           idKey="product_id"
+          resource="products"
         />
       ),
     },
   ]
-
-
-
-
-
 
   return (
     <>
@@ -188,15 +185,13 @@ const ProductsPage = () => {
       <div className="flex justify-between items-center">
         <AppTitle title="Products" />
         <div className="flex justify-between items-center space-x-2">
-          <Button
+          <DeleteButton
+            resource="products"
             variant="outline"
             className={`flex py-2 px-4 ${selectedIds.length === 0 ? "opacity-50 cursor-not-allowed" : ""
               }`}
-            onClick={handleMassDeleteClick}
-            disabled={selectedIds.length === 0}
-          >
-            Delete
-          </Button>
+            onDelete={handleMassDeleteClick}
+          />
           <Button
             onClick={() => {
               setIsModalOpen(true);
