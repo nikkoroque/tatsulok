@@ -187,9 +187,8 @@ const Categories = () => {
         <div className="flex justify-between items-center space-x-2">
           <Button
             variant="outline"
-            className={`flex py-2 px-4 ${
-              selectedIds.length === 0 ? "opacity-50 cursor-not-allowed" : ""
-            }`}
+            className={`flex py-2 px-4 ${selectedIds.length === 0 ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             onClick={handleMassDeleteClick}
             disabled={selectedIds.length === 0}
           >

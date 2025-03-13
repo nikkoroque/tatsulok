@@ -132,4 +132,28 @@ router.put("/:id", productsController_1.updateProduct);
  *         description: Product deleted successfully
  */
 router.delete("/:id", productsController_1.deleteProduct);
+/**
+ * @swagger
+ * /api/products/validate/{name}:
+ *   get:
+ *     summary: Validate a product name
+ *     tags: [Products]
+ *     parameters:
+ *       - in: path
+ *         name: name
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Product name
+ *     responses:
+ *       200:
+ *         description: Product name is available
+ *       400:
+ *         description: Product name is required
+ *       409:
+ *         description: Product name already exists
+ *       500:
+ *         description: Internal server error
+ */
+router.get("/validate/:name", productsController_1.validateProduct);
 exports.default = router;

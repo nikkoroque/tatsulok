@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { addProduct, deleteProduct, getProducts, updateProduct } from "../controller/productsController";
+import { addProduct, deleteProduct, getProducts, updateProduct, validateProduct } from "../controller/productsController";
 
 const router = Router();
 
@@ -138,4 +138,32 @@ router.put("/:id", updateProduct);
  *         description: Product deleted successfully
  */
 router.delete("/:id", deleteProduct);
+
+/**
+ * @swagger
+ * /api/products/validate/{name}:
+ *   get:
+ *     summary: Validate a product name
+ *     tags: [Products]
+ *     parameters:
+ *       - in: path
+ *         name: name
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Product name
+ *     responses:
+ *       200:
+ *         description: Product name is available
+ *       400:
+ *         description: Product name is required
+ *       409:
+ *         description: Product name already exists
+ *       500:
+ *         description: Internal server error
+ */
+router.get("/validate/:name", validateProduct);
+
+
+
 export default router;

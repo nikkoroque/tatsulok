@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteProduct = exports.updateProduct = exports.addProduct = exports.getProducts = void 0;
+exports.validateProduct = exports.deleteProduct = exports.updateProduct = exports.addProduct = exports.getProducts = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
 const getProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -78,3 +78,25 @@ const deleteProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.deleteProduct = deleteProduct;
+const validateProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { name } = req.params;
+    if (!name) {
+        res.status(400).json({ error: "Product name is required" });
+        return;
+    }
+    try {
+        const existingProduct = yield prisma.products.findFirst({
+            where: { name: { equals: name, mode: "insensitive" } },
+        });
+        if (existingProduct) {
+            res.status(409).json({ error: "Product name already exists." });
+            return;
+        }
+        res.status(200).json({ message: "Product name is available." });
+    }
+    catch (error) {
+        console.error("Error validating product:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+exports.validateProduct = validateProduct;
