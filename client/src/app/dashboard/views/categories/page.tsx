@@ -20,8 +20,10 @@ import {
 } from "@/api/api";
 import AddEditCategoryModal from "./components/AddEditCategoryModal";
 import { DeleteButton } from "../../components/DeleteButton/app-delete-button";
+import { useAuth } from "@/hooks/useAuth";
 
 const Categories = () => {
+  const { hasPermission } = useAuth();
   const { toast } = useToast();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -194,6 +196,7 @@ const Categories = () => {
             onDelete={handleMassDeleteClick}
             resource="categories"
           />
+          {hasPermission('create', 'categories') && (
           <Button
             onClick={() => {
               setIsModalOpen(true);
@@ -202,6 +205,7 @@ const Categories = () => {
           >
             Add New
           </Button>
+          )}
         </div>
       </div>
 

@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { addProduct, deleteProduct, getProducts, updateProduct, validateProduct } from "../controller/productsController";
+import { authenticateUser, checkPermission } from "../middleware/auth.middleware";
 
 const router = Router();
 
@@ -76,7 +77,11 @@ router.get("/", getProducts);
  *       201:
  *         description: Product created successfully
  */
-router.post("/", addProduct);
+router.post("/", 
+  authenticateUser,
+  checkPermission({ action: 'create', resource: 'products' } as const),
+  addProduct
+);
 
 
 /**

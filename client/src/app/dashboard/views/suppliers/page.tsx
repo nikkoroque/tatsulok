@@ -20,7 +20,7 @@ import ConfirmationDialog from "../../components/AlertDialog/app-confirmation-di
 import AddEditSupplierModal from "./components/AddEditSupplierModal";
 import { Button } from "@/components/ui/button";
 import { DeleteButton } from "../../components/DeleteButton/app-delete-button";
-
+import { useAuth } from "@/hooks/useAuth";
 const Suppliers = () => {
   const { toast } = useToast();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,6 +35,7 @@ const Suppliers = () => {
   const [currentIdToDelete, setCurrentIdToDelete] = useState<number | null>(
     null
   );
+  const { hasPermission } = useAuth();
 
   const [createSupplier] =
     useCreateSupplierMutation();
@@ -197,14 +198,16 @@ const Suppliers = () => {
             onDelete={handleMassDeleteClick}
             resource="suppliers"
           />
+          {hasPermission('create', 'suppliers') && (
           <Button
             onClick={() => {
               setIsModalOpen(true);
             }}
-            className="hover:bg-primary dark:hover:bg-primary"
-          >
-            Add New
-          </Button>
+              className="hover:bg-primary dark:hover:bg-primary"
+            >
+              Add New
+            </Button>
+          )}
         </div>
       </div>
 
