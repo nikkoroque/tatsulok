@@ -1,4 +1,4 @@
-export type Role = 'Admin' | 'Staff';
+export type Role = 'Admin' | 'Staff' | 'Manager';
 
 export interface Permission {
   action: 'create' | 'read' | 'update' | 'delete';
@@ -31,17 +31,34 @@ export const rolePermissions: Record<Role, Permission[]> = {
     { action: 'create', resource: 'transactions' },
     { action: 'read', resource: 'transactions' },
     { action: 'update', resource: 'transactions' },
-    { action: 'delete', resource: 'transactions' },
+    { action: 'delete', resource: 'transactions' }, 
+  ],
+  Manager: [
+    { action: 'create', resource: 'products' },
+    { action: 'read', resource: 'products' },
+    { action: 'update', resource: 'products' },
+    { action: 'delete', resource: 'products' },
+    { action: 'create', resource: 'categories' },
+    { action: 'read', resource: 'categories' },
+    { action: 'update', resource: 'categories' },
+    { action: 'delete', resource: 'categories' },
+    { action: 'create', resource: 'suppliers' },
+    { action: 'read', resource: 'suppliers' },
+    // Add other manager permissions
   ],
   Staff: [
     // Staff has limited access
     { action: 'read', resource: 'products' },
+    { action: 'create', resource: 'products' },
+    { action: 'update', resource: 'products' },
     { action: 'read', resource: 'categories' },
+    { action: 'create', resource: 'categories' },
+    { action: 'update', resource: 'categories' },
     { action: 'read', resource: 'suppliers' },
+    { action: 'create', resource: 'suppliers' },
+    { action: 'update', resource: 'suppliers' },
     { action: 'read', resource: 'transactions' },
     { action: 'create', resource: 'transactions' },
     { action: 'update', resource: 'transactions' },
-    // Add basic user read permission for Staff
-    { action: 'read', resource: 'users' },
   ]
 };

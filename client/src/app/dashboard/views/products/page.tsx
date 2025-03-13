@@ -15,6 +15,7 @@ import { ToastAction } from '@/components/ui/toast';
 import AddEditProductModal from './components/AddEditProductModal';
 import ConfirmationDialog from '../../components/AlertDialog/app-confirmation-dialog';
 import { DeleteButton } from '../../components/DeleteButton/app-delete-button';
+import { useAuth } from '@/hooks/useAuth';
 
 
 
@@ -40,6 +41,7 @@ const ProductsPage = () => {
   const [deleteProduct] =
     useDeleteProductMutation();
 
+  const { hasPermission } = useAuth();
 
   const handleCreateProduct = async (productData: Product) => {
     try {
@@ -192,14 +194,16 @@ const ProductsPage = () => {
               }`}
             onDelete={handleMassDeleteClick}
           />
-          <Button
-            onClick={() => {
-              setIsModalOpen(true);
-            }}
+          {hasPermission('create', 'products') && (
+            <Button
+              onClick={() => {
+                setIsModalOpen(true);
+              }}
             className="hover:bg-primary dark:hover:bg-primary"
           >
             Add New
           </Button>
+          )}
         </div>
       </div>
 

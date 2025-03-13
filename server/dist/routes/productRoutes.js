@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const productsController_1 = require("../controller/productsController");
+const auth_middleware_1 = require("../middleware/auth.middleware");
 const router = (0, express_1.Router)();
 /**
  * @swagger
@@ -74,7 +75,7 @@ router.get("/", productsController_1.getProducts);
  *       201:
  *         description: Product created successfully
  */
-router.post("/", productsController_1.addProduct);
+router.post("/", auth_middleware_1.authenticateUser, (0, auth_middleware_1.checkPermission)({ action: 'create', resource: 'products' }), productsController_1.addProduct);
 /**
  * @swagger
  * /api/products/{id}:
