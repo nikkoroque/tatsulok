@@ -19,6 +19,7 @@ import {
   useUpdateCategoryMutation,
 } from "@/api/api";
 import AddEditCategoryModal from "./components/AddEditCategoryModal";
+import { DeleteButton } from "../../components/DeleteButton/app-delete-button";
 
 const Categories = () => {
   const { toast } = useToast();
@@ -169,6 +170,7 @@ const Categories = () => {
           onEdit={handleEditCategoryRow}
           onDelete={handleDeleteClick}
           idKey="category_id"
+          resource="categories"
         />
       ),
     },
@@ -185,15 +187,13 @@ const Categories = () => {
       <div className="flex justify-between items-center">
         <AppTitle title="Categories" />
         <div className="flex justify-between items-center space-x-2">
-          <Button
+          <DeleteButton
             variant="outline"
             className={`flex py-2 px-4 ${selectedIds.length === 0 ? "opacity-50 cursor-not-allowed" : ""
               }`}
-            onClick={handleMassDeleteClick}
-            disabled={selectedIds.length === 0}
-          >
-            Delete
-          </Button>
+            onDelete={handleMassDeleteClick}
+            resource="categories"
+          />
           <Button
             onClick={() => {
               setIsModalOpen(true);

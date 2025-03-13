@@ -10,6 +10,8 @@ import categoryRoutes from "./routes/categoryRoutes";
 import productRoutes from "./routes/productRoutes"
 import transactionRoutes from "./routes/transactionRoutes";
 import supplierRoutes from "./routes/supplierRoutes"
+import userRoutes from "./routes/userRoutes";
+import authRoutes from "./routes/authRoutes";
 
 // Swagger configuration
 const swaggerOptions = {
@@ -47,6 +49,8 @@ app.use("/api/products", productRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/transactions", transactionRoutes);
 app.use("/api/supplier", supplierRoutes)
+app.use("/api/users", userRoutes);
+app.use("/api/auth", authRoutes);
 
 // Swagger route
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));

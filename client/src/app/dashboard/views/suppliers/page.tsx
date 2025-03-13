@@ -19,6 +19,7 @@ import ActionMenu from "../../components/ActionMenu/app-action-menu";
 import ConfirmationDialog from "../../components/AlertDialog/app-confirmation-dialog";
 import AddEditSupplierModal from "./components/AddEditSupplierModal";
 import { Button } from "@/components/ui/button";
+import { DeleteButton } from "../../components/DeleteButton/app-delete-button";
 
 const Suppliers = () => {
   const { toast } = useToast();
@@ -171,6 +172,7 @@ const Suppliers = () => {
           onEdit={handleEditSupplierRow}
           onDelete={handleDeleteClick}
           idKey="supplier_id"
+          resource="suppliers"
         />
       ),
     },
@@ -187,16 +189,14 @@ const Suppliers = () => {
       <div className="flex justify-between items-center">
         <AppTitle title="Suppliers" />
         <div className="flex justify-between items-center space-x-2">
-          <Button
+          <DeleteButton
             variant="outline"
             className={`flex py-2 px-4 ${
               selectedIds.length === 0 ? "opacity-50 cursor-not-allowed" : ""
             }`}
-            onClick={handleMassDeleteClick}
-            disabled={selectedIds.length === 0}
-          >
-            Delete
-          </Button>
+            onDelete={handleMassDeleteClick}
+            resource="suppliers"
+          />
           <Button
             onClick={() => {
               setIsModalOpen(true);

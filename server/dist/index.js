@@ -15,6 +15,8 @@ const categoryRoutes_1 = __importDefault(require("./routes/categoryRoutes"));
 const productRoutes_1 = __importDefault(require("./routes/productRoutes"));
 const transactionRoutes_1 = __importDefault(require("./routes/transactionRoutes"));
 const supplierRoutes_1 = __importDefault(require("./routes/supplierRoutes"));
+const userRoutes_1 = __importDefault(require("./routes/userRoutes"));
+const authRoutes_1 = __importDefault(require("./routes/authRoutes"));
 // Swagger configuration
 const swaggerOptions = {
     definition: {
@@ -48,6 +50,8 @@ app.use("/api/products", productRoutes_1.default);
 app.use("/api/categories", categoryRoutes_1.default);
 app.use("/api/transactions", transactionRoutes_1.default);
 app.use("/api/supplier", supplierRoutes_1.default);
+app.use("/api/users", userRoutes_1.default);
+app.use("/api/auth", authRoutes_1.default);
 // Swagger route
 app.use("/api-docs", swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swaggerSpecs));
 // Server
