@@ -3,12 +3,22 @@ import { Supplier } from "@/models/Supplier";
 import { Transaction } from "@/models/Transaction";
 import {Product} from "@/models/Products"
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { RootState } from "@/app/redux";
 
 export const api = createApi({
-    baseQuery: fetchBaseQuery({ baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL }),
-
+    baseQuery: fetchBaseQuery({ 
+        baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL,
+        prepareHeaders: (headers, { getState }) => {
+            // Get token from Redux store
+            const token = (getState() as RootState).auth.token;
+            
+            if (token) {
+                headers.set('authorization', `Bearer ${token}`);
+            }
+            return headers;
+        },
+    }),
     reducerPath: "api",
-
     tagTypes: ["Supplier", "Category", "Transaction", "Product"],
 
     endpoints: (build) => ({

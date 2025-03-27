@@ -46,7 +46,7 @@ export function ProtectedRoute({ children, requiredPermission }: ProtectedRouteP
   if (requiredPermission && !hasPermission(requiredPermission.action, requiredPermission.resource)) {
     return (
       <div className="flex h-screen items-center justify-center">
-        <p className="text-lg text-red-500">You don't have permission to access this page.</p>
+        <p className="text-lg text-red-500">You don&apos;t have permission to access this page.</p>
       </div>
     );
   }

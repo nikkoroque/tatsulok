@@ -25,7 +25,6 @@ const ActionMenu = <T,>({
   onEdit,
   onDelete,
   idKey,
-  resource,
 }: ActionMenuProps<T>) => {
   const { user } = useAuth();
   
