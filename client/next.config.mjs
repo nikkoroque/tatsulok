@@ -22,6 +22,10 @@ const nextConfig = {
             source: "/transactions",
             destination: "/dashboard/views/transactions",
           },
+          {
+            source: "/dashboard/users",
+            destination: "/dashboard/views/users",
+          },
         ]
       }
 };

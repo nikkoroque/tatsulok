@@ -67,7 +67,7 @@ export const routes = {
       items: [
         {
           title: "Users",
-          url: "#",
+          url: "/dashboard/users",
         },
       ],
     },

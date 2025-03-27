@@ -4,6 +4,7 @@ import { Transaction } from "@/models/Transaction";
 import {Product} from "@/models/Products"
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "@/app/redux";
+import { User } from "@/models/User";
 
 export const api = createApi({
     baseQuery: fetchBaseQuery({ 
@@ -19,7 +20,7 @@ export const api = createApi({
         },
     }),
     reducerPath: "api",
-    tagTypes: ["Supplier", "Category", "Transaction", "Product"],
+    tagTypes: ["Supplier", "Category", "Transaction", "Product", "User"],
 
     endpoints: (build) => ({
 
@@ -166,6 +167,43 @@ export const api = createApi({
             query: (name) => `/products/validate/${name}`,
             providesTags: ["Product"],
         }),
+
+        //Users
+        getUsers: build.query<User[], void>({
+            query: () => "/users",
+            providesTags: ["User"],
+        }),
+
+        createUser: build.mutation<User, User>({
+            query: (body) => ({
+                url: "/users",
+                method: "POST",
+                body,
+            }),
+            invalidatesTags: ["User"],
+        }),
+
+        updateUser: build.mutation<User, { id: number; data: Partial<User> }>({
+            query: ({ id, data }) => ({
+                url: `/users/${id}`,
+                method: "PUT",
+                body: data
+            }),
+            invalidatesTags: ["User"],
+        }),
+        
+        deleteUser: build.mutation<User, number>({
+            query: (id) => ({
+                url: `/users/${id}`,
+                method: "DELETE",
+            }),
+            invalidatesTags: ["User"],
+        }),
+
+        validateUser: build.query<boolean, string>({
+            query: (email) => `/users/validate/${email}`,
+            providesTags: ["User"],
+        }),
     }),
 });
 
@@ -189,4 +227,9 @@ export const {
   useUpdateProductMutation,
   useDeleteProductMutation,
   useValidateProductQuery,
+  useGetUsersQuery,
+  useCreateUserMutation,
+  useUpdateUserMutation,
+  useDeleteUserMutation,
+  useValidateUserQuery,
 } = api;
