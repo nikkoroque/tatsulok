@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import React from 'react'
 import { BoxReveal } from '../ui/box-reveal';
 import { TypingAnimation } from '../ui/typing-animation';
@@ -11,7 +10,7 @@ type Props = {
     heroImage: string;
 }
 
-const Hero = ({ heroTitle, heroSubText, heroButtonText, heroButtonLink, heroImage }: Props) => {
+const Hero = ({ heroTitle, heroSubText, heroButtonText, heroImage }: Props) => {
     return (
         <>
             <div className="container px-6 py-16 mx-auto text-center">
@@ -29,7 +28,7 @@ const Hero = ({ heroTitle, heroSubText, heroButtonText, heroButtonLink, heroImag
                     </div>
                 </div>
                 <div className="flex justify-center mt-10">
-                    <img className="object-cover w-full h-96 rounded-xl lg:w-4/5" src={heroImage} />
+                    <img className="object-cover w-full h-96 rounded-xl lg:w-4/5" src={heroImage} alt={heroTitle} />
                 </div>
             </div>
         </>

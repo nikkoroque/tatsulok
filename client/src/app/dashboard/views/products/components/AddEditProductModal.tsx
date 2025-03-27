@@ -7,9 +7,10 @@ import useDebounce from '@/hooks/use-debounce';
 import useValidation from '@/hooks/use-validation';
 import { Product } from '@/models/Products';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React, { use, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { useAuth } from '@/hooks/useAuth';
 
 type AddEditProductModalProps = {
   isOpen: boolean;
@@ -37,6 +38,7 @@ const AddEditProductModal = ({
   onUpdate,
   row,
 }: AddEditProductModalProps) => {
+  const { hasPermission } = useAuth();
   const [productName, setProductName] = useState("");
   const debouncedProductName = useDebounce(productName, 100);
 
@@ -285,9 +287,11 @@ const AddEditProductModal = ({
               )} />
               <div className="flex justify-between">
                 <Button variant="outline" onClick={onClose}>Cancel</Button>
-                <Button type="submit" disabled={!!productNameError} className={`hover:bg-primary ${productNameError ? "disabled:opacity-50" : ""}`}>
-                  {row ? "Update" : "Create"}
-                </Button>
+                {hasPermission('create', 'products') && (
+                  <Button type="submit" disabled={!!productNameError} className={`hover:bg-primary ${productNameError ? "disabled:opacity-50" : ""}`}>
+                    {row ? "Update" : "Create"}
+                  </Button>
+                )}
               </div>
             </form>
           </Form>

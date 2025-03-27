@@ -1,6 +1,5 @@
 import { useAppDispatch, useAppSelector } from '@/app/redux';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 import { setCredentials, logout } from '@/auth/authSlice';
 import { useLoginMutation } from '@/auth/authApi';
 import { Role, rolePermissions } from '@/types/rbac';
