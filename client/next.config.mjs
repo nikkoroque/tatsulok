@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-        domains: ["images.unsplash.com", "target.scene7.com" , "avatar.vercel.sh"],
+        domains: ["images.unsplash.com", "target.scene7.com" , "avatar.vercel.sh", "tatsulok.cloud", "www.tatsulok.cloud"], unoptimized: true,
       },
 
       async rewrites() {
