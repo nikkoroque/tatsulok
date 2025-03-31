@@ -1,10 +1,10 @@
 "use client";
 import React from "react";
 import { ContainerScroll } from "@/components/ui/container-scroll-animation";
-import Image from "next/image";
 import GridBackground from "@/components/grid-background/GridBackground";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import Image from "next/image";
 
 const Hero = () => {
   return (
@@ -42,7 +42,7 @@ const Hero = () => {
                   height={720}
                   width={1400}
                   className="mx-auto rounded-2xl object-cover h-full object-left-top"
-                  draggable={false}
+                  draggable={false} unoptimized
                 />
               </ContainerScroll>
             </div>

@@ -44,7 +44,7 @@ app.use(helmet_1.default.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use((0, morgan_1.default)("common"));
 app.use(body_parser_1.default.json());
 app.use(body_parser_1.default.urlencoded({ extended: false }));
-app.use((0, cors_1.default)());
+app.use((0, cors_1.default)({ origin: ['https://tatsulok.cloud', 'https://www.tatsulok.cloud'], credentials: true, }));
 // Routes
 app.use("/api/products", productRoutes_1.default);
 app.use("/api/categories", categoryRoutes_1.default);
