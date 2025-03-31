@@ -1,6 +1,6 @@
-import HomeView from "./home/page";
+import { redirect } from "next/navigation";
 
 export default function Home() {
-  return <HomeView />;
+  redirect("/home");
 }
 

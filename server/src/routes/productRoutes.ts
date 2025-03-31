@@ -1,11 +1,12 @@
 import { Router } from "express";
-import { addProduct, deleteProduct, getProducts, updateProduct } from "../controller/productsController";
+import { addProduct, deleteProduct, getProducts, updateProduct, validateProduct } from "../controller/productsController";
+import { authenticateUser, checkPermission } from "../middleware/auth.middleware";
 
 const router = Router();
 
 /**
  * @swagger
- * /api/product:
+ * /api/products:
  *   get:
  *     summary: Get all products
  *     tags: [Products]
@@ -19,18 +20,20 @@ const router = Router();
  *               items:
  *                 type: object
  *                 properties:
- *                   id:
- *                     type: string
+ *                   product_id:
+ *                     type: integer
  *                   name:
  *                     type: string
  *                   description:
  *                     type: string
  *                   category_id:
- *                     type: string
+ *                     type: integer
  *                   quantity:
  *                     type: integer
  *                   price:
  *                     type: integer
+ *                   img:
+ *                     type: string
  *                   created_at:
  *                     type: string
  *                   updated_at:
@@ -41,7 +44,7 @@ router.get("/", getProducts);
 
 /**
  * @swagger
- * /api/product:
+ * /api/products:
  *   post:
  *     summary: Create a new product
  *     tags: [Products]
@@ -53,7 +56,7 @@ router.get("/", getProducts);
  *             type: object
  *             properties:
  *                   name:
- *                     type: string
+ *                     type: string 
  *                   description:
  *                     type: string
  *                   category_id:
@@ -62,6 +65,8 @@ router.get("/", getProducts);
  *                     type: integer
  *                   price:
  *                     type: integer
+ *                   img:
+ *                     type: string
  *                   created_at:
  *                     type: string
  *                     format: date-time
@@ -72,12 +77,16 @@ router.get("/", getProducts);
  *       201:
  *         description: Product created successfully
  */
-router.post("/", addProduct);
+router.post("/", 
+  authenticateUser,
+  checkPermission({ action: 'create', resource: 'products' } as const),
+  addProduct
+);
 
 
 /**
  * @swagger
- * /api/product/{id}:
+ * /api/products/{id}:
  *   put:
  *     summary: Update a product
  *     tags: [Products]
@@ -103,6 +112,8 @@ router.post("/", addProduct);
  *                     type: integer
  *                   price:
  *                     type: integer
+ *                   img:
+ *                     type: string
  *                   created_at:
  *                     type: string
  *                     format: date-time
@@ -118,7 +129,7 @@ router.put("/:id", updateProduct);
 
 /**
  * @swagger
- * /api/product/{id}:
+ * /api/products/{id}:
  *   delete:
  *     summary: Delete a product
  *     tags: [Products]
@@ -132,4 +143,32 @@ router.put("/:id", updateProduct);
  *         description: Product deleted successfully
  */
 router.delete("/:id", deleteProduct);
+
+/**
+ * @swagger
+ * /api/products/validate/{name}:
+ *   get:
+ *     summary: Validate a product name
+ *     tags: [Products]
+ *     parameters:
+ *       - in: path
+ *         name: name
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Product name
+ *     responses:
+ *       200:
+ *         description: Product name is available
+ *       400:
+ *         description: Product name is required
+ *       409:
+ *         description: Product name already exists
+ *       500:
+ *         description: Internal server error
+ */
+router.get("/validate/:name", validateProduct);
+
+
+
 export default router;

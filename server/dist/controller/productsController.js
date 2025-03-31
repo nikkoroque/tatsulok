@@ -9,45 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteProduct = exports.updateProduct = exports.addProduct = exports.getProducts = void 0;
+exports.validateProduct = exports.deleteProduct = exports.updateProduct = exports.addProduct = exports.getProducts = void 0;
 const client_1 = require("@prisma/client");
 const prisma = new client_1.PrismaClient();
-// export const getProducts = async(req: Request, res: Response): Promise<void> => {
-//     try {
-//         const products = await prisma.products.findMany({
-//             orderBy: { product_id: "asc"},
-//             select: {
-//                 product_id: true,
-//                 name: true,
-//                 description: true,
-//                 category_id: true,
-//                 quantity: true,
-//                 price: true,
-//                 created_at: true,
-//                 updated_at: true,
-//             },
-//         });
-//         res.json(products)
-//     } catch (error) {
-//         console.error("Error retrieving products: ", error);
-//         res.status(500).json({error: "Internal server error"});
-//     }
-// };
 const getProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const products = yield prisma.products.findMany({
-            orderBy: { product_id: "asc" },
-            select: {
-                product_id: true,
-                name: true,
-                description: true,
-                category_id: true,
-                quantity: true,
-                price: true,
-                created_at: true,
-                updated_at: true,
-            },
-        });
+        const products = yield prisma.products.findMany();
         res.json(products);
     }
     catch (error) {
@@ -57,9 +24,9 @@ const getProducts = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 });
 exports.getProducts = getProducts;
 const addProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { name, description, category_id, quantity, price, created_at, updated_at } = req.body;
+    const { name, description, category_id, quantity, price, img, created_at, updated_at } = req.body;
     try {
-        const newProduct = yield prisma.products.create({ data: { name, description, category_id, quantity, price, created_at, updated_at } });
+        const newProduct = yield prisma.products.create({ data: { name, description, category_id, quantity, price, img, created_at, updated_at } });
         res.status(201).json(newProduct);
     }
     catch (error) {
@@ -70,7 +37,7 @@ const addProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 exports.addProduct = addProduct;
 const updateProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    const { name, description, category_id, quantity, price, created_at, updated_at } = req.body;
+    const { name, description, category_id, quantity, price, img, created_at, updated_at } = req.body;
     try {
         if (!id) {
             res.status(400).json({ error: "Product id is required" });
@@ -78,7 +45,7 @@ const updateProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         }
         const updatedProduct = yield prisma.products.update({ where: {
                 product_id: Number(id)
-            }, data: { name, description, category_id, quantity, price, created_at, updated_at } });
+            }, data: { name, description, category_id, quantity, price, img, created_at, updated_at } });
         res.status(200).json(updatedProduct);
     }
     catch (error) {
@@ -111,3 +78,25 @@ const deleteProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.deleteProduct = deleteProduct;
+const validateProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { name } = req.params;
+    if (!name) {
+        res.status(400).json({ error: "Product name is required" });
+        return;
+    }
+    try {
+        const existingProduct = yield prisma.products.findFirst({
+            where: { name: { equals: name, mode: "insensitive" } },
+        });
+        if (existingProduct) {
+            res.status(409).json({ error: "Product name already exists." });
+            return;
+        }
+        res.status(200).json({ message: "Product name is available." });
+    }
+    catch (error) {
+        console.error("Error validating product:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+});
+exports.validateProduct = validateProduct;
